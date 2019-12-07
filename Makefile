@@ -1,26 +1,16 @@
 CC=gcc
 
-BUILD_DIR = ./build
 INC_DIR = ./inc
-LOW_DIR = ./low
 MAIN_DIR = ./main
 DATA_DIR = ./data
 
-OBJ = $(BUILD_DIR)/*.o
+result: $(MAIN_DIR) 
+	$(CC) $(MAIN_DIR)/main.c -o result -I${INC_DIR}
 
-.PONEY: clean clear
+run : result
+	./result
 
-result: $(OBJ) 
-	$(CC) $(OBJ) -o $(BUILD_DIR)/result -L$(DATA_DIR) -I${INC_DIR}
+.PONEY:clear
 
-
-$(BUILD_DIR)/main.o: $(MAIN_DIR)/main.c 
-	$(CC) $(CCFLAGS) $(MAIN_DIR)/main.c -I${INC_DIR} -o $(BUILD_DIR)/main.o 
-
-$(BUILD_DIR)/*.o:$(INC_DIR)/*.h
-
-all:main
-
-clean:
-	rm -rf *.o $(BUILD_DIR)/*.o
-	rm -rf $(BUILD_DIR)/test*
+clear:
+	rm result
