@@ -1,6 +1,7 @@
 #include "user.h"
-#include "file.h"
 #include "link.h"
+#include "file.h"
+
 
 int organize(int order);
 
@@ -14,7 +15,7 @@ int main(int argc, char const *argv[])
 		{
 			case  0:break;
 			case -2:break;
-			default:organize(choice);
+			default:choice = organize(choice);
 		}
 		if (choice == -1 )
 		{
@@ -32,18 +33,23 @@ int organize(int order){
 		case 1 : 
 			order = add();
 			break;
-/*		case 2 : 
+		case 2 : 
 			order = search();
 			break;
 		case 3 :
-			order = delect();
+			order = modify();
 			break;
 		case 4 :
-			order = browse();
+			order = delect();
 			break;
 		case 5 :
+			order = browse();
+			break;
+		case 6 :
 			order = load();
+			break;
 		default:
 			order = -1;
-*/	}
+	}
+	return (order);
 }

@@ -9,6 +9,7 @@ typedef struct list
 	char name[15];
 	long tele;
 	long QQ_number;
+	long address;
 	_Bool isusual;
 	struct list *next;
 }LIST;
@@ -54,6 +55,7 @@ int option(){
 		};
 	len = sizeof(info)/sizeof(*info);
 	print(len,info);
+	fflush(stdin);
 	scanf("%d",&choice);
 
 	if (choice > len || choice <1)
@@ -87,7 +89,7 @@ int targetinfo(LIST *store,int mode){
 		{
 			switch (i)
 			{
-				case 1 :
+				case 4 :
 					do
 					{
 						printf("Is it frequent contact:\n");
@@ -106,15 +108,15 @@ int targetinfo(LIST *store,int mode){
 					while(1);
 					store->isusual = (_Bool)usual;
 					break;
-				case 2 :
+				case 3 :
 					printf("the QQ of the contact\n");
 					scanf("%ld",&store->QQ_number);
 					break;
-				case 3 :
+				case 2 :
 					printf("the telephone of the contact\n");
 					scanf("%ld",&store->tele);
 					break;
-				case 4 :
+				case 1 :
 					printf("the name of the contact\n");
 					fflush(stdin);
 					fgets(store->name,10,stdin);
@@ -122,14 +124,37 @@ int targetinfo(LIST *store,int mode){
 					{
 						t++;
 					}
-					store->name[t-1] = 0;
+					store->name[t-1] = '|';
+					store->name[t] = 0;
 					break;
 				default:
 					return (-1);
 			}
 		}
 	}
+	store->next = NULL;
 	return (0);
+}
+
+int modechoose(int control){
+	// request finding mode &information
+	int mode;
+	printf("\n");
+	printf("which information do you input?\n");
+	printf("name = 1,telephone = 2,\n");
+	if (control == 2 )
+		printf("QQ = 4,isusual = 8\n");
+	printf("add up to input the mode you choose:\n");
+	scanf("%d",&mode);
+	while ( mode < 0 || mode > ((control == 2)?15:3) )
+	{
+		outrange();
+		printf("\n");
+		printf("you choice:\n");
+		fflush(stdin);
+		scanf("%d",&mode);
+	}
+	return (mode);
 }
 
 #endif
