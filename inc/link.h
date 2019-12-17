@@ -60,13 +60,13 @@ int writein(FILE *fp,LIST *listp,int mode){
 }
 
 // print a title
-int print_title(){
+int fprint_title(FILE *fp){
 	printf("\n");
 	char name[]="name";
 	char tele[]="telephone";
 	char QQ_number[]="QQ_number";
 	char usual[]="isusual";
-	printf("%-18s%-14s%-12s%s\n",
+	fprintf(fp,"%-18s%-14s%-12s%s\n",
 		name,tele,QQ_number,usual);
 	return(0);
 }
@@ -218,7 +218,7 @@ int freememory(LIST *listp){
 }
 
 int sort(LIST **head){
-	LIST **p = NULL;
+	LIST *p = NULL;
 	LIST *q = NULL;
 	int t = 1;
 	while( t )
@@ -228,45 +228,42 @@ int sort(LIST **head){
 		{
 			if (strcmp((*head)->name,(*head)->next->name) > 0)
 			{
+				(*head)->last = (*head)->next;
 				(*head) = (*head)->next;
 				q = (*head)->next;
 				(*head)->next = (*head)->last;
 				(*head)->last = NULL;
 				(*head)->next->next = q;
-				if (q->next)
+				if ( q->next )
 				{
-					q->next->last = q;
+					q->last = (*head)->next;
 				}
 			}
 
-			p = &((*head)->next);
+			p = (*head)->next;
 	
-			while ((*p)->next)
+			while (p->next)
 			{
-				if ( strcmp((*p)->name,(*p)->next->name) > 0 )
+				if ( strcmp(p->name,p->next->name) > 0 )
 				{
-					q = (*p)->next;
-					if ( (*p)->last != NULL)
+					q = p->next;
+					if ( p->last )
 					{
-						(*p)->next = q;
+						p->last->next = q;
 					}
-					if ( q->next != NULL)
+					if ( q->next )
 					{
-						q->next->last = (*p);
+						q->next->last = p;
 					}
-					q->last = (*p)->last;
-					writein(stdout,*head,3);
-					(*p)->next = q->next;
-					writein(stdout,*head,3);
-					(*p)->last = q;
-					writein(stdout,*head,3);
-					q->next = (*p);
-					writein(stdout,*head,3);
+					q->last = p->last;
+					p->next = q->next;
+					p->last = q;
+					q->next = p;
 					t = 1;
 				}
 				else
 				{
-					p = &((*p)->next);
+					p = p->next;
 				}
 				writein(stdout,*head,3);
 			}

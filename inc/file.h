@@ -2,10 +2,13 @@
 #define FILE_H
 
 int add(){
+	int i = 1;
+	int find_result = -1;
 	FILE *fp;
 	LIST info;
+	LIST *head;
 	targetinfo(&info,15);
-	print_title();
+	fprint_title(stdout);
 	writein(stdout,&info,3);
 	fp = fopen(".//data//contacts.txt","a");
 	if ( fp  == 0 )
@@ -13,7 +16,19 @@ int add(){
 		openfail();
 		return (-1);
 	}
-	writein(fp,&info,2);
+	while ( i != 8 )
+	{
+		find_result = find(fp,&info,&head,i);
+		i *= 2;
+	}
+	if ( find(fp,&info,&head,15) != -1 )
+	{
+		printf("already have the \n");
+	}
+	else
+	{
+		writein(fp,&info,2);
+	}
 	if( fclose(fp) )
 	{
 		closefail();
@@ -41,7 +56,7 @@ int search(){
 	find_result = find(fp,&info,&head,mode);
 	if ( find_result != -1 )
 	{
-		print_title();
+		fprint_title(stdout);
 		writein(stdout,head,3);
 		freememory(head);
 	}
@@ -76,7 +91,7 @@ int modify(){
 	find_result = find(fp,&info,&head,mode);
 	if ( find_result != -1 )
 	{
-		print_title();
+		fprint_title(stdout);
 		writein(stdout,head,3);
 		p = head;
 		do
@@ -222,7 +237,9 @@ int load(){
 		openfail();
 		return (-1);
 	}
+	fprint_title(stdout);
 	writein(stdout,head,3);
+	fprint_title(fp);
 	writein(fp,head,1);
 	if( fclose(fp) )
 	{
